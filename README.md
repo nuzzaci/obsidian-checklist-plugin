@@ -1,8 +1,39 @@
-**LOOKING FOR ANOTHER MAINTAINER TO HELP OUT** There's quite a bit of work to do on this plugin still and i've been neglecting it because work is too busy. I would love some help, or at least someone who could approve PRs and triage issues. Send me an email at delashum@gmail.com if you're interested.
+# Checklist with Markers for Obsidian
 
-# obsidian-checklist-plugin
+This plugin consolidates checklists from across files into a single sidebar view.
 
-This plugin consolidates checklists from across files into a single view.
+**This is a fork** of [delashum's Checklist plugin](https://github.com/delashum/obsidian-checklist-plugin) (v2.2.14) with extended marker support.
+
+## New in this Fork: Extended Marker Support
+
+This fork adds support for all 24 checkbox markers, giving you fine-grained control over which types of items appear in your checklist view. Learn more about extended checkbox syntax at [minimal.guide/checklists](https://minimal.guide/checklists).
+
+### Supported Markers
+
+- `[ ]` to-do
+- `[/]` incomplete
+- `[x]` done
+- `[-]` canceled
+- `[>]` forwarded
+- `[<]` scheduling
+- `[?]` question
+- `[!]` important
+- `[*]` star
+- `["]` quote
+- `[l]` location
+- `[b]` bookmark
+- `[i]` information
+- `[S]` savings
+- `[I]` idea
+- `[p]` pros
+- `[c]` cons
+- `[f]` fire
+- `[k]` key
+- `[w]` win
+- `[u]` up
+- `[d]` down
+
+Each marker type has its own visibility toggle in the settings, allowing you to customize which items appear in your checklist view.
 
 ![screenshot-main](https://raw.githubusercontent.com/delashum/obsidian-checklist-plugin/master/images/screenshot-two-files.png)
 
@@ -20,9 +51,11 @@ You can complete checklist items by checking them off in your editor (e.g. `- [ 
 
 **Tag name:** The default tag to lookup checklist items by is `#todo`, but may be changed to whatever you like
 
-**Show completed?:** By default the plugin will only show uncompleted tasks, and as tasks are completed they will filter out of the sidebar. You may choose to show all tasks
+**Show completed?:** By default the plugin will only show uncompleted tasks, and as tasks are completed they will filter out of the sidebar. You may choose to show all tasks (Deprecated: use "Marker Visibility" settings below for fine-grained control)
 
 ![screenshot-completed](https://raw.githubusercontent.com/delashum/obsidian-checklist-plugin/master/images/screenshot-show-completed.png)
+
+**Marker Visibility:** Control which marker types appear in your checklist view. Each of the 24 marker types has its own toggle. By default, most markers are shown except "done" and "canceled" items.
 
 **Show All Todos In File?:** By default the plugin will only show tasks in the block that is tagged - changing this will show all tasks present in a file if the tag is present anywhere on the page.
 

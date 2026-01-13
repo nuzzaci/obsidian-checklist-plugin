@@ -1,7 +1,32 @@
 import type {CachedMetadata, TagCache, TFile} from 'obsidian'
 
+export type TodoMarker =
+  | 'todo'          // [ ]
+  | 'incomplete'    // [/]
+  | 'done'          // [x]
+  | 'canceled'      // [-]
+  | 'forwarded'     // [>]
+  | 'scheduling'    // [<]
+  | 'question'      // [?]
+  | 'important'     // [!]
+  | 'star'          // [*]
+  | 'quote'         // ["]
+  | 'location'      // [l]
+  | 'bookmark'      // [b]
+  | 'information'   // [i]
+  | 'savings'       // [S]
+  | 'idea'          // [I]
+  | 'pros'          // [p]
+  | 'cons'          // [c]
+  | 'fire'          // [f]
+  | 'key'           // [k]
+  | 'win'           // [w]
+  | 'up'            // [u]
+  | 'down'          // [d]
+
 export type TodoItem = {
-  checked: boolean
+  marker: TodoMarker
+  checked: boolean  // Keep for backward compatibility (true for 'done')
   filePath: string
   fileName: string
   fileLabel: string

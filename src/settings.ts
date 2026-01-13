@@ -5,7 +5,7 @@ import type {GroupByType, LookAndFeel, SortDirection} from './_types'
 
 export interface TodoSettings {
   todoPageName: string
-  showChecked: boolean
+  showChecked: boolean  // Deprecated: use showDone instead
   showAllTodos: boolean
   showOnlyActiveFile: boolean
   autoRefresh: boolean
@@ -18,11 +18,34 @@ export interface TodoSettings {
   lookAndFeel: LookAndFeel
   _collapsedSections: string[]
   _hiddenTags: string[]
+  // Marker visibility settings
+  showTodo: boolean
+  showIncomplete: boolean
+  showDone: boolean
+  showCanceled: boolean
+  showForwarded: boolean
+  showScheduling: boolean
+  showQuestion: boolean
+  showImportant: boolean
+  showStar: boolean
+  showQuote: boolean
+  showLocation: boolean
+  showBookmark: boolean
+  showInformation: boolean
+  showSavings: boolean
+  showIdea: boolean
+  showPros: boolean
+  showCons: boolean
+  showFire: boolean
+  showKey: boolean
+  showWin: boolean
+  showUp: boolean
+  showDown: boolean
 }
 
 export const DEFAULT_SETTINGS: TodoSettings = {
   todoPageName: 'todo',
-  showChecked: false,
+  showChecked: false,  // Deprecated
   showAllTodos: false,
   showOnlyActiveFile: false,
   autoRefresh: true,
@@ -35,6 +58,29 @@ export const DEFAULT_SETTINGS: TodoSettings = {
   lookAndFeel: 'classic',
   _collapsedSections: [],
   _hiddenTags: [],
+  // Marker visibility defaults - show most common types by default
+  showTodo: true,
+  showIncomplete: true,
+  showDone: false,  // Hide completed by default (matches old behavior)
+  showCanceled: false,
+  showForwarded: true,
+  showScheduling: true,
+  showQuestion: true,
+  showImportant: true,
+  showStar: true,
+  showQuote: true,
+  showLocation: true,
+  showBookmark: true,
+  showInformation: true,
+  showSavings: true,
+  showIdea: true,
+  showPros: true,
+  showCons: true,
+  showFire: true,
+  showKey: true,
+  showWin: true,
+  showUp: true,
+  showDown: true,
 }
 
 export class TodoSettingTab extends PluginSettingTab {
@@ -78,10 +124,213 @@ export class TodoSettingTab extends PluginSettingTab {
 
     new Setting(this.containerEl)
       .setName('Show Completed?')
+      .setDesc('Deprecated: Use "Show Done" in Marker Visibility section below')
       .addToggle(toggle => {
         toggle.setValue(this.plugin.getSettingValue('showChecked'))
         toggle.onChange(async value => {
-          await this.plugin.updateSettings({showChecked: value})
+          await this.plugin.updateSettings({showChecked: value, showDone: value})
+        })
+      })
+
+    /** MARKER VISIBILITY */
+
+    new Setting(this.containerEl).setName('Marker Visibility').setHeading()
+
+    new Setting(this.containerEl)
+      .setName('Show To-Do [ ]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showTodo'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showTodo: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Incomplete [/]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showIncomplete'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showIncomplete: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Done [x]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showDone'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showDone: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Canceled [-]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showCanceled'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showCanceled: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Forwarded [>]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showForwarded'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showForwarded: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Scheduling [<]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showScheduling'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showScheduling: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Question [?]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showQuestion'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showQuestion: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Important [!]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showImportant'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showImportant: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Star [*]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showStar'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showStar: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Quote ["]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showQuote'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showQuote: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Location [l]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showLocation'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showLocation: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Bookmark [b]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showBookmark'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showBookmark: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Information [i]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showInformation'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showInformation: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Savings [S]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showSavings'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showSavings: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Idea [I]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showIdea'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showIdea: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Pros [p]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showPros'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showPros: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Cons [c]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showCons'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showCons: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Fire [f]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showFire'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showFire: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Key [k]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showKey'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showKey: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Win [w]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showWin'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showWin: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Up [u]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showUp'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showUp: value})
+        })
+      })
+
+    new Setting(this.containerEl)
+      .setName('Show Down [d]')
+      .addToggle(toggle => {
+        toggle.setValue(this.plugin.getSettingValue('showDown'))
+        toggle.onChange(async value => {
+          await this.plugin.updateSettings({showDown: value})
         })
       })
 

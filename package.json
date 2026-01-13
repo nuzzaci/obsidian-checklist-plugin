@@ -1,7 +1,7 @@
 {
-  "name": "obsidian-checklist-plugin",
-  "version": "2.2.14",
-  "description": "A plugin for Obsidian.md which consoldiates todo items into a single view.",
+  "name": "obsidian-checklist-markers",
+  "version": "2.3.0",
+  "description": "A plugin for Obsidian.md which consolidates todo items with support for all 24 checkbox markers into a single view.",
   "main": "main.js",
   "scripts": {
     "dev": "node esbuild.config.mjs",

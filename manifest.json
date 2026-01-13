@@ -1,9 +1,10 @@
 {
-	"id": "obsidian-checklist-plugin",
-	"name": "Checklist",
-	"version": "2.2.14",
+	"id": "obsidian-checklist-markers",
+	"name": "Checklist with Markers",
+	"version": "2.3.0",
 	"minAppVersion": "0.14.5",
-	"description": "Combines checklists across pages into users sidebar",
-	"author": "delashum",
+	"description": "Consolidates checklists with support for all 24 checkbox markers into a sidebar view",
+	"author": "nuzzaci (fork of delashum's Checklist)",
+	"authorUrl": "https://github.com/nuzzaci/obsidian-checklist-plugin",
 	"isDesktopOnly": false
 }

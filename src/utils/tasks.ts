@@ -15,11 +15,13 @@ import {
   getFrontmatterTags,
   getIndentationSpacesFromTodoLine,
   getTagMeta,
+  getTodoMarker,
   retrieveTag,
   lineIsValidTodo,
   mapLinkMeta,
   removeTagFromText,
   setLineTo,
+  setLineToMarker,
   todoLineIsChecked,
 } from './helpers'
 
@@ -31,7 +33,42 @@ import type {
   TFile,
   Vault,
 } from 'obsidian'
-import type {TodoItem, TagMeta, FileInfo} from 'src/_types'
+import type {TodoItem, TagMeta, FileInfo, TodoMarker} from 'src/_types'
+import type {TodoSettings} from '../settings'
+
+/**
+ * Helper function to check if a marker should be shown based on settings
+ */
+const shouldShowMarker = (marker: TodoMarker, settings: Partial<TodoSettings>): boolean => {
+  const markerSettingMap: Record<TodoMarker, string> = {
+    'todo': 'showTodo',
+    'incomplete': 'showIncomplete',
+    'done': 'showDone',
+    'canceled': 'showCanceled',
+    'forwarded': 'showForwarded',
+    'scheduling': 'showScheduling',
+    'question': 'showQuestion',
+    'important': 'showImportant',
+    'star': 'showStar',
+    'quote': 'showQuote',
+    'location': 'showLocation',
+    'bookmark': 'showBookmark',
+    'information': 'showInformation',
+    'savings': 'showSavings',
+    'idea': 'showIdea',
+    'pros': 'showPros',
+    'cons': 'showCons',
+    'fire': 'showFire',
+    'key': 'showKey',
+    'win': 'showWin',
+    'up': 'showUp',
+    'down': 'showDown',
+  }
+
+  const settingKey = markerSettingMap[marker] as keyof typeof settings
+  const settingValue = settings[settingKey]
+  return typeof settingValue === 'boolean' ? settingValue : true
+}
 
 /**
  * Finds all of the {@link TodoItem todos} in the {@link TFile files} that have been updated since the last re-render.
@@ -41,8 +78,10 @@ import type {TodoItem, TagMeta, FileInfo} from 'src/_types'
  * @param cache The Obsidian {@link MetadataCache} object.
  * @param vault The Obsidian {@link Vault} object.
  * @param includeFiles The pattern of files to include in the search for todos.
- * @param showChecked Whether the user wants to show completed todos in the plugin's UI.
+ * @param showChecked Whether the user wants to show completed todos in the plugin's UI (deprecated).
+ * @param showAllTodos Whether to show all todos in the file.
  * @param lastRerender Timestamp of the last time we re-rendered the checklist.
+ * @param settings The plugin settings containing marker visibility preferences.
  * @returns A map containing each {@link TFile file} that was updated, and the {@link TodoItem todos} in that file.
  * If there are no todos in a file, that file will still be present in the map, but the value for its entry will be an
  * empty array. This is required to account for the case where a file that previously had todos no longer has any.
@@ -56,6 +95,7 @@ export const parseTodos = async (
   showChecked: boolean,
   showAllTodos: boolean,
   lastRerender: number,
+  settings?: Partial<TodoSettings>,
 ): Promise<Map<TFile, TodoItem[]>> => {
   const includePattern = includeFiles.trim()
     ? includeFiles.trim().split('\n')
@@ -101,9 +141,17 @@ export const parseTodos = async (
   const todosForUpdatedFiles = new Map<TFile, TodoItem[]>()
   for (const fileInfo of filesWithCache) {
     let todos = findAllTodosInFile(fileInfo)
-    if (!showChecked) {
-      todos = todos.filter(todo => !todo.checked)
+
+    // Filter based on marker visibility settings
+    if (settings) {
+      todos = todos.filter(todo => shouldShowMarker(todo.marker, settings))
+    } else {
+      // Fallback to old behavior if settings not provided
+      if (!showChecked) {
+        todos = todos.filter(todo => !todo.checked)
+      }
     }
+
     todosForUpdatedFiles.set(fileInfo.file, todos)
   }
 
@@ -116,13 +164,17 @@ export const toggleTodoItem = async (item: TodoItem, app: App) => {
   const currentFileContents = await app.vault.read(file)
   const currentFileLines = getAllLinesFromFile(currentFileContents)
   if (!currentFileLines[item.line].includes(item.originalText)) return
-  const newData = setTodoStatusAtLineTo(
+
+  // Toggle between 'todo' and 'done' markers for backward compatibility
+  const newMarker: TodoMarker = item.marker === 'done' ? 'todo' : 'done'
+  const newData = setTodoMarkerAtLineTo(
     currentFileLines,
     item.line,
-    !item.checked,
+    newMarker,
   )
   app.vault.modify(file, newData)
-  item.checked = !item.checked
+  item.marker = newMarker
+  item.checked = newMarker === 'done'
 }
 
 const findAllTodosInFile = (file: FileInfo): TodoItem[] => {
@@ -203,10 +255,12 @@ const formTodo = (
     .use(linkPlugin(linkMap))
     .use(tagPlugin)
     .use(highlightPlugin)
+  const marker = getTodoMarker(line)
   return {
     mainTag: tagMeta?.main,
     subTag: tagMeta?.sub,
-    checked: todoLineIsChecked(line),
+    marker: marker,
+    checked: marker === 'done',  // Backward compatibility: checked means done
     filePath: file.file.path,
     fileName: file.file.name,
     fileLabel: getFileLabelFromName(file.file.name),
@@ -225,5 +279,14 @@ const setTodoStatusAtLineTo = (
   setTo: boolean,
 ) => {
   fileLines[line] = setLineTo(fileLines[line], setTo)
+  return combineFileLines(fileLines)
+}
+
+const setTodoMarkerAtLineTo = (
+  fileLines: string[],
+  line: number,
+  marker: TodoMarker,
+) => {
+  fileLines[line] = setLineToMarker(fileLines[line], marker)
   return combineFileLines(fileLines)
 }

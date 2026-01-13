@@ -2,7 +2,72 @@ import {CachedMetadata, parseFrontMatterTags, TFile, Vault} from 'obsidian'
 
 import {LOCAL_SORT_OPT} from '../constants'
 
-import type {SortDirection, TagMeta, LinkMeta, KeysOfType} from 'src/_types'
+import type {SortDirection, TagMeta, LinkMeta, KeysOfType, TodoMarker} from 'src/_types'
+
+// Marker character to TodoMarker type mapping
+const MARKER_MAP: Record<string, TodoMarker> = {
+  ' ': 'todo',
+  '/': 'incomplete',
+  'x': 'done',
+  'X': 'done',
+  '-': 'canceled',
+  '>': 'forwarded',
+  '<': 'scheduling',
+  '?': 'question',
+  '!': 'important',
+  '*': 'star',
+  '"': 'quote',
+  'l': 'location',
+  'b': 'bookmark',
+  'i': 'information',
+  'S': 'savings',
+  'I': 'idea',
+  'p': 'pros',
+  'c': 'cons',
+  'f': 'fire',
+  'k': 'key',
+  'w': 'win',
+  'u': 'up',
+  'd': 'down',
+}
+
+// TodoMarker type to marker character mapping
+const MARKER_TO_CHAR: Record<TodoMarker, string> = {
+  'todo': ' ',
+  'incomplete': '/',
+  'done': 'x',
+  'canceled': '-',
+  'forwarded': '>',
+  'scheduling': '<',
+  'question': '?',
+  'important': '!',
+  'star': '*',
+  'quote': '"',
+  'location': 'l',
+  'bookmark': 'b',
+  'information': 'i',
+  'savings': 'S',
+  'idea': 'I',
+  'pros': 'p',
+  'cons': 'c',
+  'fire': 'f',
+  'key': 'k',
+  'win': 'w',
+  'up': 'u',
+  'down': 'd',
+}
+
+export const getTodoMarker = (line: string): TodoMarker => {
+  const match = /^(\s|\>)*([\-\*]|[0-9]+\.)\s\[(.{1})\]/.exec(line)
+  if (!match) return 'todo'
+  const char = match[3]
+  return MARKER_MAP[char] ?? 'todo'
+}
+
+export const markerToChar = (marker: TodoMarker): string => {
+  return MARKER_TO_CHAR[marker]
+}
+
 export const isMacOS = () => window.navigator.userAgent.includes('Macintosh')
 export const classifyString = (str: string) => {
   const sanitzedGroupName = (str ?? '').replace(/[^A-Za-z0-9]/g, '')
@@ -43,6 +108,12 @@ export const setLineTo = (line: string, setTo: boolean) =>
   line.replace(
     /^((\s|\>)*([\-\*]|[0-9]+\.)\s\[)([^\]]+)(\].*$)/,
     `$1${setTo ? 'x' : ' '}$5`,
+  )
+
+export const setLineToMarker = (line: string, marker: TodoMarker) =>
+  line.replace(
+    /^((\s|\>)*([\-\*]|[0-9]+\.)\s\[)([^\]]+)(\].*$)/,
+    `$1${markerToChar(marker)}$5`,
   )
 
 export const getAllLinesFromFile = (cache: string) => cache.split(/\r?\n/)

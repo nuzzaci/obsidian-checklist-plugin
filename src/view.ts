@@ -115,6 +115,32 @@ export default class TodoListView extends ItemView {
   }
 
   private async calculateAllItems() {
+    // Get all marker visibility settings
+    const settings = {
+      showTodo: this.plugin.getSettingValue('showTodo'),
+      showIncomplete: this.plugin.getSettingValue('showIncomplete'),
+      showDone: this.plugin.getSettingValue('showDone'),
+      showCanceled: this.plugin.getSettingValue('showCanceled'),
+      showForwarded: this.plugin.getSettingValue('showForwarded'),
+      showScheduling: this.plugin.getSettingValue('showScheduling'),
+      showQuestion: this.plugin.getSettingValue('showQuestion'),
+      showImportant: this.plugin.getSettingValue('showImportant'),
+      showStar: this.plugin.getSettingValue('showStar'),
+      showQuote: this.plugin.getSettingValue('showQuote'),
+      showLocation: this.plugin.getSettingValue('showLocation'),
+      showBookmark: this.plugin.getSettingValue('showBookmark'),
+      showInformation: this.plugin.getSettingValue('showInformation'),
+      showSavings: this.plugin.getSettingValue('showSavings'),
+      showIdea: this.plugin.getSettingValue('showIdea'),
+      showPros: this.plugin.getSettingValue('showPros'),
+      showCons: this.plugin.getSettingValue('showCons'),
+      showFire: this.plugin.getSettingValue('showFire'),
+      showKey: this.plugin.getSettingValue('showKey'),
+      showWin: this.plugin.getSettingValue('showWin'),
+      showUp: this.plugin.getSettingValue('showUp'),
+      showDown: this.plugin.getSettingValue('showDown'),
+    }
+
     const todosForUpdatedFiles = await parseTodos(
       this.app.vault.getMarkdownFiles(),
       this.todoTagArray.length === 0 ? ['*'] : this.visibleTodoTagArray,
@@ -124,6 +150,7 @@ export default class TodoListView extends ItemView {
       this.plugin.getSettingValue('showChecked'),
       this.plugin.getSettingValue('showAllTodos'),
       this.lastRerender,
+      settings,
     )
     for (const [file, todos] of todosForUpdatedFiles) {
       this.itemsByFile.set(file.path, todos)

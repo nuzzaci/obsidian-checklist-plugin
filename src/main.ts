@@ -93,11 +93,41 @@ export default class TodoPlugin extends Plugin {
       'sortDirectionSubGroups',
       'sortDirectionItems',
     ]
-    if (onlyRepaintWhenChanges.includes(Object.keys(updates)[0]))
+    const markerVisibilitySettings = [
+      'showTodo',
+      'showIncomplete',
+      'showDone',
+      'showCanceled',
+      'showForwarded',
+      'showScheduling',
+      'showQuestion',
+      'showImportant',
+      'showStar',
+      'showQuote',
+      'showLocation',
+      'showBookmark',
+      'showInformation',
+      'showSavings',
+      'showIdea',
+      'showPros',
+      'showCons',
+      'showFire',
+      'showKey',
+      'showWin',
+      'showUp',
+      'showDown',
+      'showChecked',  // Keep for backward compatibility
+    ]
+
+    const updatedKey = Object.keys(updates)[0]
+
+    if (onlyRepaintWhenChanges.includes(updatedKey))
       this.view.rerender()
+    else if (markerVisibilitySettings.includes(updatedKey))
+      this.view.refresh(true)  // Full refresh for marker visibility changes
     else
       this.view.refresh(
-        !onlyReGroupWhenChanges.includes(Object.keys(updates)[0]),
+        !onlyReGroupWhenChanges.includes(updatedKey),
       )
   }
 
