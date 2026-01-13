@@ -1,10 +1,9 @@
 
 > [!IMPORTANT]
 > This is a fork of [delashum's Checklist plugin](https://github.com/delashum/obsidian-checklist-plugin) (v2.2.14).
-> It adds support for checkbox markers as per [minimal.guide/checklists](https://minimal.guide/checklists).
 >
 > **New Features:**
-> - **24 Marker Types**: Support for all checkbox markers (incomplete, important, question, star, etc.)
+> - **24 Marker Types**: Support for all checkbox markers as per [minimal.guide/checklists](https://minimal.guide/checklists).
 > - **Individual Visibility Controls**: Each marker type has its own toggle in settings
 > - **Color-Coded Icons**: Visual markers with color coding for quick identification
 > - **Group by Marker**: Organize todos by marker type in addition to page or tag grouping
