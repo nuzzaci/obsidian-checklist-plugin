@@ -60,8 +60,12 @@ export type TagGroup = BaseGroup & {
   mainTag?: string
   subTags?: string
 }
+export type MarkerGroup = BaseGroup & {
+  type: 'marker'
+  marker?: TodoMarker
+}
 
-export type TodoGroup = PageGroup | TagGroup
+export type TodoGroup = PageGroup | TagGroup | MarkerGroup
 
 export type FileInfo = {
   content: string
@@ -75,7 +79,7 @@ export type FileInfo = {
 export type TagMeta = {main: string; sub: string}
 export type LinkMeta = {filePath: string; linkName: string}
 
-export type GroupByType = 'page' | 'tag'
+export type GroupByType = 'page' | 'tag' | 'marker'
 export type SortDirection = 'new->old' | 'old->new' | 'a->z' | 'z->a'
 export type LookAndFeel = 'compact' | 'classic'
 

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { App } from "obsidian"
 
-  import type { LookAndFeel, TodoGroup } from "src/_types"
+  import type { LookAndFeel, TodoGroup, TodoMarker } from "src/_types"
   import { navToFile } from "src/utils"
   import ChecklistItem from "./ChecklistItem.svelte"
   import Icon from "./Icon.svelte"
@@ -11,6 +11,31 @@
   export let lookAndFeel: LookAndFeel
   export let app: App
   export let onToggle: (id: string) => void
+
+  const markerLabels: Record<TodoMarker, string> = {
+    'todo': 'To-Do',
+    'incomplete': 'Incomplete',
+    'done': 'Done',
+    'canceled': 'Canceled',
+    'forwarded': 'Forwarded',
+    'scheduling': 'Scheduling',
+    'question': 'Question',
+    'important': 'Important',
+    'star': 'Star',
+    'quote': 'Quote',
+    'location': 'Location',
+    'bookmark': 'Bookmark',
+    'information': 'Information',
+    'savings': 'Savings',
+    'idea': 'Idea',
+    'pros': 'Pros',
+    'cons': 'Cons',
+    'fire': 'Fire',
+    'key': 'Key',
+    'win': 'Win',
+    'up': 'Up',
+    'down': 'Down',
+  }
 
   function clickTitle(ev: MouseEvent) {
     if (group.type === "page") navToFile(app, group.id, ev)
@@ -22,6 +47,8 @@
     <div class="title" on:click={clickTitle}>
       {#if group.type === "page"}
         {group.pageName}
+      {:else if group.type === "marker"}
+        <span class="marker-label">{markerLabels[group.marker]}</span>
       {:else if group.mainTag}
         <span class="tag-base">#</span>
         <span class={group.subTags == null ? "tag-sub" : "tag-base"}
@@ -102,6 +129,9 @@
   }
   .tag-sub {
     color: var(--checklist-tagSubColor);
+  }
+  .marker-label {
+    color: var(--text-accent);
   }
 
   ul {

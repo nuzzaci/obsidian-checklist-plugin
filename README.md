@@ -2,7 +2,12 @@
 > [!IMPORTANT]
 > This is a fork of [delashum's Checklist plugin](https://github.com/delashum/obsidian-checklist-plugin) (v2.2.14).
 > It adds support for checkbox markers as per [minimal.guide/checklists](https://minimal.guide/checklists).
-> Each marker type has its own visibility toggle in the settings, allowing you to customize which items appear in your checklist view.
+>
+> **New Features:**
+> - **24 Marker Types**: Support for all checkbox markers (incomplete, important, question, star, etc.)
+> - **Individual Visibility Controls**: Each marker type has its own toggle in settings
+> - **Color-Coded Icons**: Visual markers with color coding for quick identification
+> - **Group by Marker**: Organize todos by marker type in addition to page or tag grouping
 
 
 # obsidian-checklist-plugin
@@ -33,7 +38,7 @@ You can complete checklist items by checking them off in your editor (e.g. `- [ 
 
 **Show All Todos In File?:** By default the plugin will only show tasks in the block that is tagged - changing this will show all tasks present in a file if the tag is present anywhere on the page.
 
-**Group by:** You can group by either file or tagname. If you choose to group by tag name they will appear in the order that they first appear in your files (or last depending on sort order)
+**Group by:** You can group by file, tagname, or marker type. When grouping by marker, all items with the same marker (e.g., all "Important" items, all "Question" items) will be grouped together. Items will appear in the order that they first appear in your files (or last depending on sort order)
 
 ![screenshot-tags](https://raw.githubusercontent.com/delashum/obsidian-checklist-plugin/master/images/screenshot-sub-tag.png)
 

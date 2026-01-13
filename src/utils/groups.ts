@@ -1,6 +1,32 @@
 import {classifyString, sortGenericItemsInplace} from './helpers'
 
 import type {TodoItem, TodoGroup, GroupByType, SortDirection} from 'src/_types'
+
+const markerLabels: Record<string, string> = {
+  'todo': 'To-Do',
+  'incomplete': 'Incomplete',
+  'done': 'Done',
+  'canceled': 'Canceled',
+  'forwarded': 'Forwarded',
+  'scheduling': 'Scheduling',
+  'question': 'Question',
+  'important': 'Important',
+  'star': 'Star',
+  'quote': 'Quote',
+  'location': 'Location',
+  'bookmark': 'Bookmark',
+  'information': 'Information',
+  'savings': 'Savings',
+  'idea': 'Idea',
+  'pros': 'Pros',
+  'cons': 'Cons',
+  'fire': 'Fire',
+  'key': 'Key',
+  'win': 'Win',
+  'up': 'Up',
+  'down': 'Down',
+}
+
 export const groupTodos = (
   items: TodoItem[],
   groupBy: GroupByType,
@@ -14,6 +40,8 @@ export const groupTodos = (
     const itemKey =
       groupBy === 'page'
         ? item.filePath
+        : groupBy === 'marker'
+        ? item.marker
         : `#${[item.mainTag, item.subTag].filter(e => e != null).join('/')}`
     let group = groups.find(g => g.id === itemKey)
     if (!group) {
@@ -38,6 +66,10 @@ export const groupTodos = (
         newGroup.className = classifyString(
           (newGroup.mainTag ?? '') + (newGroup.subTags ?? ''),
         )
+      } else if (newGroup.type === 'marker') {
+        newGroup.marker = item.marker
+        newGroup.sortName = markerLabels[item.marker] || item.marker
+        newGroup.className = classifyString(item.marker)
       }
       groups.push(newGroup)
       group = newGroup
@@ -68,15 +100,21 @@ export const groupTodos = (
         'fileCreatedTs',
       )
   else
-    for (const g of nonEmptyGroups)
+    for (const g of nonEmptyGroups) {
+      let subGroupBy: GroupByType = 'page'
+      if (groupBy === 'page') subGroupBy = 'tag'
+      else if (groupBy === 'tag') subGroupBy = 'page'
+      else if (groupBy === 'marker') subGroupBy = 'page'
+
       g.groups = groupTodos(
         g.todos,
-        groupBy === 'page' ? 'tag' : 'page',
+        subGroupBy,
         subGroupSort,
         sortItems,
         false,
         null,
       )
+    }
 
   return nonEmptyGroups
 }

@@ -365,6 +365,7 @@ export class TodoSettingTab extends PluginSettingTab {
     new Setting(this.containerEl).setName('Group By').addDropdown(dropdown => {
       dropdown.addOption('page', 'Page')
       dropdown.addOption('tag', 'Tag')
+      dropdown.addOption('marker', 'Marker')
       dropdown.setValue(this.plugin.getSettingValue('groupBy'))
       dropdown.onChange(async (value: GroupByType) => {
         await this.plugin.updateSettings({groupBy: value})
