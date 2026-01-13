@@ -1,39 +1,13 @@
-# Checklist with Markers for Obsidian
+
+> [!IMPORTANT]
+> This is a fork of [delashum's Checklist plugin](https://github.com/delashum/obsidian-checklist-plugin) (v2.2.14).
+> It adds support for checkbox markers as per [minimal.guide/checklists](https://minimal.guide/checklists).
+> Each marker type has its own visibility toggle in the settings, allowing you to customize which items appear in your checklist view.
+
+
+# obsidian-checklist-plugin
 
 This plugin consolidates checklists from across files into a single sidebar view.
-
-**This is a fork** of [delashum's Checklist plugin](https://github.com/delashum/obsidian-checklist-plugin) (v2.2.14) with extended marker support.
-
-## New in this Fork: Extended Marker Support
-
-This fork adds support for all 24 checkbox markers, giving you fine-grained control over which types of items appear in your checklist view. Learn more about extended checkbox syntax at [minimal.guide/checklists](https://minimal.guide/checklists).
-
-### Supported Markers
-
-- `[ ]` to-do
-- `[/]` incomplete
-- `[x]` done
-- `[-]` canceled
-- `[>]` forwarded
-- `[<]` scheduling
-- `[?]` question
-- `[!]` important
-- `[*]` star
-- `["]` quote
-- `[l]` location
-- `[b]` bookmark
-- `[i]` information
-- `[S]` savings
-- `[I]` idea
-- `[p]` pros
-- `[c]` cons
-- `[f]` fire
-- `[k]` key
-- `[w]` win
-- `[u]` up
-- `[d]` down
-
-Each marker type has its own visibility toggle in the settings, allowing you to customize which items appear in your checklist view.
 
 ![screenshot-main](https://raw.githubusercontent.com/delashum/obsidian-checklist-plugin/master/images/screenshot-two-files.png)
 
